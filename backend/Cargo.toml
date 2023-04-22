@@ -1,0 +1,16 @@
+[package]
+name = "backend"
+version = "0.1.0"
+authors = ["John Idogun <sirneij@gmail.com>"]
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "backend"
+
+[dependencies]
+actix-web = "4"
+tokio = { version = "1.27.0", features = ["macros", "rt-multi-thread"] }
