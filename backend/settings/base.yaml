@@ -1,2 +1,17 @@
 application:
   port: 5000
+
+database:
+  username: "quickcheck"
+  password: "password"
+  port: 5432
+  host: "localhost"
+  database_name: "rust_auth_db_dev"
+  require_ssl: false
+
+redis:
+  uri: "redis://127.0.0.1:6379"
+  pool_max_open: 16
+  pool_max_idle: 8
+  pool_timeout_seconds: 1
+  pool_expire_seconds: 60
