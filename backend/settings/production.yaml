@@ -1,0 +1,6 @@
+application:
+  protocol: https
+  host: 0.0.0.0
+  base_url: "https://johnwrites-actix-backend.onrender.com"
+
+debug: false
