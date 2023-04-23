@@ -13,4 +13,16 @@ name = "backend"
 
 [dependencies]
 actix-web = "4"
+config = { version = "0.13.3", features = ["yaml"] }
+dotenv = "0.15.0"
+serde = "1.0.160"
 tokio = { version = "1.27.0", features = ["macros", "rt-multi-thread"] }
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3.17", features = [
+    "fmt",
+    "std",
+    "env-filter",
+    "registry",
+    'json',
+    'tracing-log',
+] }

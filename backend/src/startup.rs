@@ -4,8 +4,11 @@ pub struct Application {
 }
 
 impl Application {
-    pub async fn build() -> Result<Self, std::io::Error> {
-        let address = "127.0.0.1:5000";
+    pub async fn build(settings: crate::settings::Settings) -> Result<Self, std::io::Error> {
+        let address = format!(
+            "{}:{}",
+            settings.application.host, settings.application.port
+        );
 
         let listener = std::net::TcpListener::bind(&address)?;
         let port = listener.local_addr().unwrap().port();
