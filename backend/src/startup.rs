@@ -57,7 +57,7 @@ async fn run(
     let pool = actix_web::web::Data::new(db_pool);
 
     // Redis connection pool
-    let cfg = deadpool_redis::Config::from_url(settings.clone().redis.uri);
+    let cfg = deadpool_redis::Config::from_url(settings.redis.uri);
     let redis_pool = cfg
         .create_pool(Some(deadpool_redis::Runtime::Tokio1))
         .expect("Cannot create deadpool redis.");
@@ -66,6 +66,8 @@ async fn run(
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .service(crate::routes::health_check)
+            // Authentication routes
+            .configure(crate::routes::auth_routes_config)
             // Add database pool to application state
             .app_data(pool.clone())
             // Add redis pool to application state

@@ -13,10 +13,18 @@ name = "backend"
 
 [dependencies]
 actix-web = "4"
+argon2 = "0.5"
+chrono = "0.4"
 config = { version = "0.13", features = ["yaml"] }
 deadpool-redis = "0.11"
 dotenv = "0.15"
+hex = "0.4"
+lettre = { version = "0.10", features = ["builder", "tokio1-native-tls"] }
+minijinja = { version = "0.32", features = ["source"] }
+once_cell = "1.17"
+pasetors = "0.6"
 serde = "1"
+serde_json = { version = "1", features = ["raw_value"] }
 sqlx = { version = "0.6", features = [
     "runtime-actix-rustls",
     "postgres",
@@ -34,3 +42,4 @@ tracing-subscriber = { version = "0.3", features = [
     'json',
     'tracing-log',
 ] }
+uuid = { version = "1", features = ["v4", "serde"] }

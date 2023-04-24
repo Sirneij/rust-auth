@@ -7,6 +7,9 @@ pub struct Settings {
     pub debug: bool,
     pub database: DatabaseSettings,
     pub redis: RedisSettings,
+    pub secret: Secret,
+    pub email: EmailSettings,
+    pub frontend_url: String,
 }
 
 /// Application's specific settings to expose `port`,
@@ -28,6 +31,20 @@ pub struct RedisSettings {
     pub pool_max_idle: u64,
     pub pool_timeout_seconds: u64,
     pub pool_expire_seconds: u64,
+}
+
+#[derive(serde::Deserialize, Clone)]
+pub struct Secret {
+    pub secret_key: String,
+    pub token_expiration: i64,
+    pub hmac_secret: String,
+}
+
+#[derive(serde::Deserialize, Clone)]
+pub struct EmailSettings {
+    pub host: String,
+    pub host_user: String,
+    pub host_user_password: String,
 }
 
 /// Database settings for the entire app
@@ -102,7 +119,7 @@ impl TryFrom<String> for Environment {
 /// For this to work, you the environment variable MUST be in uppercase and starts with `APP`,
 /// a `_` separator then the category of settings,
 /// followed by `__` separator,  and then the variable, e.g.
-/// `APP__APPLICATION_PORT=5001` for `port` to be set as `5001`
+/// `APP_APPLICATION__PORT=5001` for `port` to be set as `5001`
 pub fn get_settings() -> Result<Settings, config::ConfigError> {
     let base_path = std::env::current_dir().expect("Failed to determine the current directory");
     let settings_directory = base_path.join("settings");

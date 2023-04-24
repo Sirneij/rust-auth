@@ -1,6 +1,7 @@
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
     dotenv::dotenv().ok();
+    dotenv::from_filename(".env.development").ok();
 
     let settings = backend::settings::get_settings().expect("Failed to read settings.");
 
