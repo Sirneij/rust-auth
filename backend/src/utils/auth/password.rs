@@ -13,10 +13,7 @@ pub async fn hash(password: &[u8]) -> String {
 }
 
 #[tracing::instrument(name = "Verifying user password", skip(password, hash))]
-pub async fn verify_password(
-    hash: &str,
-    password: &[u8],
-) -> Result<(), argon2::password_hash::Error> {
+pub fn verify_password(hash: &str, password: &[u8]) -> Result<(), argon2::password_hash::Error> {
     let parsed_hash = PasswordHash::new(hash)?;
     Argon2::default().verify_password(password, &parsed_hash)
 }

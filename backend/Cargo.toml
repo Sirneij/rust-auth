@@ -12,9 +12,10 @@ path = "src/main.rs"
 name = "backend"
 
 [dependencies]
+actix-session = { version = "0.7", features = ["cookie-session"] }
 actix-web = "4"
 argon2 = "0.5"
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
 config = { version = "0.13", features = ["yaml"] }
 deadpool-redis = "0.11"
 dotenv = "0.15"
