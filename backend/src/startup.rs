@@ -63,8 +63,26 @@ async fn run(
         .expect("Cannot create deadpool redis.");
     let redis_pool_data = actix_web::web::Data::new(redis_pool);
 
+    // For session
+    let secret_key = actix_web::cookie::Key::from(settings.secret.hmac_secret.as_bytes());
+
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
+            .wrap(if settings.debug {
+                actix_session::SessionMiddleware::builder(
+                    actix_session::storage::CookieSessionStore::default(),
+                    secret_key.clone(),
+                )
+                .cookie_http_only(true)
+                .cookie_same_site(actix_web::cookie::SameSite::None)
+                .cookie_secure(true)
+                .build()
+            } else {
+                actix_session::SessionMiddleware::new(
+                    actix_session::storage::CookieSessionStore::default(),
+                    secret_key.clone(),
+                )
+            })
             .service(crate::routes::health_check)
             // Authentication routes
             .configure(crate::routes::auth_routes_config)
