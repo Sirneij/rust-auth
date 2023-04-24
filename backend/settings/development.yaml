@@ -4,3 +4,10 @@ application:
   base_url: "http://127.0.0.1"
 
 debug: true
+
+secret:
+  secret_key: "YkDU_%q({@QV&5-Z}SONy,7YO?[qF6F6"
+  token_expiration: 30
+  hmac_secret: "3daad17f50d3577ae06406213073aa28e5cda75b97f5f35170e63653bbb66d8d"
+
+frontend_url: "https://localhost:3000"

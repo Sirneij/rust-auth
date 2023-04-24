@@ -21,9 +21,7 @@ pub fn get_subscriber(debug: bool) -> impl tracing::Subscriber + Send + Sync {
         None
     };
 
-    let subscriber = subscriber.with(json_log);
-
-    subscriber
+    subscriber.with(json_log)
 }
 
 pub fn init_subscriber(subscriber: impl tracing::Subscriber + Send + Sync) {
