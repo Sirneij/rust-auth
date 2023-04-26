@@ -12,12 +12,14 @@
 	if (reason) {
 		$notification = {
 			message: `${reason} ${sadEmoji}...`,
-			borderColor: `border-rose-300 bg-rose-100`,
-			textTopColor: 'text-rose-800',
-			textBottomColor: 'text-rose-600'
+			colorName: 'rose'
 		};
 	}
 </script>
+
+<svelte:head>
+	<title>Auth - Regenerate Token | Actix Web & SvelteKit</title>
+</svelte:head>
 
 <div class="flex items-center justify-center h-[60vh]">
 	<form

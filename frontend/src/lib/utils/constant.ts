@@ -11,11 +11,6 @@ export const happyEmoji = '😊';
 export const thinkingEmoji = '🤔';
 export const eyesRoll = '🙄';
 
-export const redColor = '#dc3545';
-export const greenColor = '#198754';
-export const yellowColor = '#ffc107';
-export const cyanColor = '#0dcaf0';
-
 export const topics: Array<Topic> = [
 	{
 		id: 1,
@@ -40,6 +35,6 @@ export const topics: Array<Topic> = [
 	{
 		id: 5,
 		title: 'CORS and Frontend Integration',
-		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-login-and-logout-1eb9'
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-cors-and-frontend-integration-2j0h'
 	}
 ];

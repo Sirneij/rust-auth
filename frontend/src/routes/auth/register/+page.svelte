@@ -62,9 +62,7 @@
 				const response: ApiResponse = res;
 				$notification = {
 					message: `You have successfully registered ${happyEmoji}...`,
-					borderColor: `border-green-300 bg-green-100`,
-					textTopColor: 'text-green-800',
-					textBottomColor: 'text-green-600'
+					colorName: 'green'
 				};
 				$apiResponse = {
 					message: response.message ? response.message : '',
@@ -75,6 +73,10 @@
 		}
 	};
 </script>
+
+<svelte:head>
+	<title>Auth - Register | Actix Web & SvelteKit</title>
+</svelte:head>
 
 <div class="flex items-center justify-center h-[60vh]">
 	<form
