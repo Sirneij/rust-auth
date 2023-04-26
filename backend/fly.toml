@@ -1,0 +1,30 @@
+# fly.toml app configuration file generated for auth-actix-web-sveltekit on 2023-04-26T22:14:07+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "auth-actix-web-sveltekit"
+primary_region = "lhr"
+
+[http_service]
+internal_port = 8080
+force_https = true
+auto_stop_machines = true
+auto_start_machines = true
+
+[checks]
+[checks.alive]
+type = "tcp"
+interval = "15s"
+timeout = "2s"
+grace_period = "5s"
+
+[env]
+APP_DATABASE__HOST = "auth-actix-web-sveltekit-db.internal"
+APP_DATABASE__DATABASE_NAME = "auth-actix-web-sveltekit-db"
+APP_DATABASE__PORT = "5433"
+APP_SECRET__SECRET_KEY = "KaPdSgVkYp3s6v9y$B&E)H+MbQeThWm6"
+APP_SECRET__HMAC_SECRET = "001448809fd614fcf2b19a6caeac40834f0771a0af0ef0849280e8042fd95918"
+APP_SECRET__TOKEN_EXPIRATION = "15"
+APP_APPLICATION__BASE_URL = "https://auth-actix-web-sveltekit.fly.dev"
+APP_FRONTEND_URL = ""

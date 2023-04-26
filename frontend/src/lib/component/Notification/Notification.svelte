@@ -15,7 +15,11 @@
 			// show alert
 			visible = true;
 			// and hide it after ms milliseconds
-			if (ms > 0) timeout = setTimeout(() => (visible = false), ms);
+			if (ms > 0)
+				timeout = setTimeout(() => {
+					visible = false;
+					notification.set({ message: '', colorName: '' });
+				}, ms);
 		}
 	};
 	// whenever the alert store or the ms props changes run onMessageChange
@@ -27,18 +31,18 @@
 {#if visible}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		class="absolute left-1/2 -translate-x-1/2 -translate-y-0 top-0 p-1 max-w-2xl flex rounded border {$notification.borderColor}"
+		class="absolute left-1/2 -translate-x-1/2 -translate-y-0 top-0 p-1 max-w-2xl flex rounded border border-{$notification.colorName}-300 bg-{$notification.colorName}-100"
 		in:receive={{ key: Math.floor(Math.random() * 100) }}
 		out:send={{ key: Math.floor(Math.random() * 100) }}
 		role="alert"
 		on:click={() => (visible = false)}
 	>
 		<div class="flex flex-col items-start text-sm">
-			<p class="{$notification.textBottomColor} font-medium antialiased">
+			<p class="text-{$notification.colorName}-600 font-medium antialiased">
 				<strong>
-					{#if $notification.textBottomColor.includes('green')}
+					{#if $notification.colorName.includes('green')}
 						Well done!:
-					{:else if $notification.textBottomColor.includes('rose')}
+					{:else if $notification.colorName.includes('rose')}
 						Oh snap!:
 					{/if}
 				</strong>

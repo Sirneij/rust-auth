@@ -97,12 +97,13 @@
 		padding-top: 1rem;
 		display: flex;
 		justify-content: center;
+		color: rgb(3 105 161);
 	}
 	.text-container p {
 		line-height: 1.5;
 		font-weight: 700;
 		overflow: hidden; /* Ensures the content is not revealed until the animation */
-		border-right: 0.15em solid var(--text-carolina-blue); /* The typwriter cursor */
+		border-right: 0.15em solid rgb(3 105 161); /* The typwriter cursor */
 		white-space: nowrap; /* Keeps the content on a single line */
 		margin: 0 auto; /* Gives that scrolling effect as the typing happens */
 		animation: typing 3.5s steps(30, end), blink-caret 0.5s step-end infinite;

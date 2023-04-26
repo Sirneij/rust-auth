@@ -8,6 +8,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Auth - Error | Actix Web & SvelteKit</title>
+</svelte:head>
+
 <div class="flex items-center justify-center h-[60vh]">
 	<div
 		class="w-11/12 md:w-2/3 lg:w-1/3 rounded-xl flex flex-col items-center divide-y bg-slate-800 py-4"

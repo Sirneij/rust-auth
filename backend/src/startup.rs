@@ -10,8 +10,21 @@ impl Application {
     ) -> Result<Self, std::io::Error> {
         let connection_pool = if let Some(pool) = test_pool {
             pool
-        } else {
+        } else if settings.debug {
             get_connection_pool(&settings.database).await
+        } else {
+            let db_url = std::env::var("DATABASE_URL").expect("Failed to get DATABASE_URL.");
+            match sqlx::postgres::PgPoolOptions::new()
+                .max_connections(5)
+                .connect(&db_url)
+                .await
+            {
+                Ok(pool) => pool,
+                Err(e) => {
+                    tracing::event!(target: "sqlx",tracing::Level::ERROR, "Couldn't establish DB connection!: {:#?}", e);
+                    panic!("Couldn't establish DB connection!")
+                }
+            }
         };
 
         sqlx::migrate!()

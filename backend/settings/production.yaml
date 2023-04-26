@@ -1,13 +1,18 @@
 application:
   protocol: https
   host: 0.0.0.0
-  base_url: "https://johnwrites-actix-backend.onrender.com"
+  base_url: "https://auth-actix-web-sveltekit.fly.dev"
 
 debug: false
 
 secret:
   secret_key: ""
-  token_expiration: 0
+  token_expiration: 15
   hmac_secret: ""
 
 frontend_url: ""
+
+database:
+  port: 5433
+  host: "auth-actix-web-sveltekit-db.internal"
+  database_name: "auth-actix-web-sveltekit-db"
