@@ -40,13 +40,14 @@ jobs:
         with:
           key: sqlx-${{ env.SQLX_VERSION }}
       - name: Install sqlx-cli
+        working-directory: ./backend
         run: cargo install sqlx-cli
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
           --locked
-        working-directory: ./backend
       - name: Run tests
+        working-directory: ./backend
         run: cargo test
 
   fmt:
