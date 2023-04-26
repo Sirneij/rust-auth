@@ -12,6 +12,7 @@ path = "src/main.rs"
 name = "backend"
 
 [dependencies]
+actix-cors = "0.6"
 actix-session = { version = "0.7", features = ["cookie-session"] }
 actix-web = "4"
 argon2 = "0.5"

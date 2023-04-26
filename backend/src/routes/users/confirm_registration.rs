@@ -42,10 +42,8 @@ pub async fn confirm(
 
             return actix_web::HttpResponse::SeeOther().insert_header((
                     actix_web::http::header::LOCATION,
-                    format!("{}/auth/regenerate-token", settings.frontend_url),
-                )).json(crate::types::ErrorResponse {
-                    error: "It appears that your confirmation token has expired or previously used. Kindly generate a new token".to_string(),
-                });
+                    format!("{}/auth/regenerate-token?reason=It appears that your confirmation token has expired or previously used. Kindly generate a new token", settings.frontend_url),
+                )).finish();
         }
     };
     match activate_new_user(&pool, confirmation_token.user_id).await {
@@ -71,9 +69,7 @@ pub async fn confirm(
                     actix_web::http::header::LOCATION,
                     format!("{}/auth/error?reason={e}", settings.frontend_url),
                 ))
-                .json(crate::types::ErrorResponse {
-                    error: "We cannot activate your account at the moment".to_string(),
-                })
+                .finish()
         }
     }
 }
