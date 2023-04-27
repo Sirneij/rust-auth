@@ -31,14 +31,21 @@
 {#if visible}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		class="absolute left-1/2 -translate-x-1/2 -translate-y-0 top-0 p-1 max-w-2xl flex rounded border border-{$notification.colorName}-300 bg-{$notification.colorName}-100"
+		class="absolute left-1/2 -translate-x-1/2 -translate-y-0 top-0 p-1 max-w-2xl flex rounded border {$notification.colorName ===
+		'green'
+			? 'border-green-300 bg-green-100'
+			: 'border-rose-300 bg-rose-100'}"
 		in:receive={{ key: Math.floor(Math.random() * 100) }}
 		out:send={{ key: Math.floor(Math.random() * 100) }}
 		role="alert"
 		on:click={() => (visible = false)}
 	>
 		<div class="flex flex-col items-start text-sm">
-			<p class="text-{$notification.colorName}-600 font-medium antialiased">
+			<p
+				class="{$notification.colorName === 'green'
+					? 'text-green-600'
+					: 'text-rose-600'} font-medium antialiased"
+			>
 				<strong>
 					{#if $notification.colorName.includes('green')}
 						Well done!:
