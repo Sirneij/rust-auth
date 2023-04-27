@@ -89,15 +89,14 @@ async fn run(
                     .supports_credentials()
                     .max_age(3600),
             )
-            .wrap(if settings.debug {
+            .wrap(
                 actix_session::SessionMiddleware::builder(redis_store.clone(), secret_key.clone())
                     .cookie_http_only(true)
                     .cookie_same_site(actix_web::cookie::SameSite::None)
                     .cookie_secure(true)
-                    .build()
-            } else {
-                actix_session::SessionMiddleware::new(redis_store.clone(), secret_key.clone())
-            })
+                    .cookie_name("sessionid".to_string())
+                    .build(),
+            )
             .service(crate::routes::health_check)
             // Authentication routes
             .configure(crate::routes::auth_routes_config)
