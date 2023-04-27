@@ -25,6 +25,7 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/release/backend backend
 COPY settings settings
+COPY templates templates
 ENV APP_ENVIRONMENT production
 ENV APP_DEBUG false
 ENTRYPOINT ["./backend"]
