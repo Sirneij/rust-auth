@@ -10,8 +10,6 @@ impl Application {
     ) -> Result<Self, std::io::Error> {
         let connection_pool = if let Some(pool) = test_pool {
             pool
-        } else if settings.debug {
-            get_connection_pool(&settings.database).await
         } else {
             let db_url = std::env::var("DATABASE_URL").expect("Failed to get DATABASE_URL.");
             match sqlx::postgres::PgPoolOptions::new()
@@ -53,14 +51,6 @@ impl Application {
     }
 }
 
-pub async fn get_connection_pool(
-    settings: &crate::settings::DatabaseSettings,
-) -> sqlx::postgres::PgPool {
-    sqlx::postgres::PgPoolOptions::new()
-        .acquire_timeout(std::time::Duration::from_secs(2))
-        .connect_lazy_with(settings.connect_to_db())
-}
-
 async fn run(
     listener: std::net::TcpListener,
     db_pool: sqlx::postgres::PgPool,
@@ -69,8 +59,10 @@ async fn run(
     // Database connection pool application state
     let pool = actix_web::web::Data::new(db_pool);
 
+    let redis_url = std::env::var("REDIS_URL").expect("Failed to get REDIS_URL.");
+
     // Redis connection pool
-    let cfg = deadpool_redis::Config::from_url(settings.redis.uri);
+    let cfg = deadpool_redis::Config::from_url(redis_url.clone());
     let redis_pool = cfg
         .create_pool(Some(deadpool_redis::Runtime::Tokio1))
         .expect("Cannot create deadpool redis.");
@@ -78,24 +70,12 @@ async fn run(
 
     // For session
     let secret_key = actix_web::cookie::Key::from(settings.secret.hmac_secret.as_bytes());
+    let redis_store = actix_session::storage::RedisSessionStore::new(redis_url.clone())
+        .await
+        .expect("Cannot unwrap redis session.");
 
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
-            .wrap(if settings.debug {
-                actix_session::SessionMiddleware::builder(
-                    actix_session::storage::CookieSessionStore::default(),
-                    secret_key.clone(),
-                )
-                .cookie_http_only(true)
-                .cookie_same_site(actix_web::cookie::SameSite::None)
-                .cookie_secure(true)
-                .build()
-            } else {
-                actix_session::SessionMiddleware::new(
-                    actix_session::storage::CookieSessionStore::default(),
-                    secret_key.clone(),
-                )
-            })
             .wrap(
                 actix_cors::Cors::default()
                     .allowed_origin(&settings.frontend_url)
@@ -109,6 +89,15 @@ async fn run(
                     .supports_credentials()
                     .max_age(3600),
             )
+            .wrap(if settings.debug {
+                actix_session::SessionMiddleware::builder(redis_store.clone(), secret_key.clone())
+                    .cookie_http_only(true)
+                    .cookie_same_site(actix_web::cookie::SameSite::None)
+                    .cookie_secure(true)
+                    .build()
+            } else {
+                actix_session::SessionMiddleware::new(redis_store.clone(), secret_key.clone())
+            })
             .service(crate::routes::health_check)
             // Authentication routes
             .configure(crate::routes::auth_routes_config)

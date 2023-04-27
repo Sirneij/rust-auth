@@ -11,8 +11,3 @@ secret:
   hmac_secret: ""
 
 frontend_url: ""
-
-database:
-  port: 5433
-  host: "auth-actix-web-sveltekit-db.internal"
-  database_name: "auth-actix-web-sveltekit-db"

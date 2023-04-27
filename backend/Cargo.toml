@@ -13,7 +13,10 @@ name = "backend"
 
 [dependencies]
 actix-cors = "0.6"
-actix-session = { version = "0.7", features = ["cookie-session"] }
+actix-session = { version = "0.7", features = [
+    "redis-rs-session",
+    "redis-rs-tls-session",
+] }
 actix-web = "4"
 argon2 = "0.5"
 chrono = { version = "0.4", features = ["serde"] }

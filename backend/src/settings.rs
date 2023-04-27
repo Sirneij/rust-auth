@@ -1,11 +1,8 @@
-use sqlx::ConnectOptions;
-
 /// Global settings for the exposing all preconfigured variables
 #[derive(serde::Deserialize, Clone)]
 pub struct Settings {
     pub application: ApplicationSettings,
     pub debug: bool,
-    pub database: DatabaseSettings,
     pub redis: RedisSettings,
     pub secret: Secret,
     pub email: EmailSettings,
@@ -26,7 +23,6 @@ pub struct ApplicationSettings {
 /// Redis settings for the entire app
 #[derive(serde::Deserialize, Clone, Debug)]
 pub struct RedisSettings {
-    pub uri: String,
     pub pool_max_open: u64,
     pub pool_max_idle: u64,
     pub pool_timeout_seconds: u64,
@@ -45,36 +41,6 @@ pub struct EmailSettings {
     pub host: String,
     pub host_user: String,
     pub host_user_password: String,
-}
-
-/// Database settings for the entire app
-#[derive(serde::Deserialize, Clone)]
-pub struct DatabaseSettings {
-    pub username: String,
-    pub password: String,
-    pub port: u16,
-    pub host: String,
-    pub database_name: String,
-    pub require_ssl: bool,
-}
-
-impl DatabaseSettings {
-    pub fn connect_to_db(&self) -> sqlx::postgres::PgConnectOptions {
-        let ssl_mode = if self.require_ssl {
-            sqlx::postgres::PgSslMode::Require
-        } else {
-            sqlx::postgres::PgSslMode::Prefer
-        };
-        let mut options = sqlx::postgres::PgConnectOptions::new()
-            .host(&self.host)
-            .username(&self.username)
-            .password(&self.password)
-            .port(self.port)
-            .ssl_mode(ssl_mode)
-            .database(&self.database_name);
-        options.log_statements(tracing::log::LevelFilter::Trace);
-        options
-    }
 }
 
 /// The possible runtime environment for our application.
@@ -110,9 +76,7 @@ impl TryFrom<String> for Environment {
 /// Multipurpose function that helps detect the current environment the application
 /// is running using the `APP_ENVIRONMENT` environment variable.
 ///
-/// ```
 /// APP_ENVIRONMENT = development | production.
-/// ```
 ///
 /// After detection, it loads appropriate .yaml file
 /// then it loads environment variable that override whatever is set in the .yaml file.
