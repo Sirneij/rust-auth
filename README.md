@@ -4,7 +4,6 @@ A full-stack secure and performant authentication system using rust's [Actix web
 
 This application resulted from [this series of articles][3] and it's currently live [here][4].
 
-
 ## Run locally
 
 You can run the application locally by first cloning it:
