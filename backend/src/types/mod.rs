@@ -1,5 +1,6 @@
 mod general;
 mod tokens;
+mod upload;
 mod users;
 
 pub use general::{
@@ -7,4 +8,5 @@ pub use general::{
     USER_IS_SUPERUSER_KEY,
 };
 pub use tokens::ConfirmationToken;
-pub use users::{LoggedInUser, User, UserVisible};
+pub use upload::UploadedFile;
+pub use users::{LoggedInUser, User, UserProfile, UserVisible};

@@ -10,6 +10,7 @@ pub struct User {
     pub is_superuser: bool,
     pub thumbnail: Option<String>,
     pub date_joined: chrono::DateTime<chrono::Utc>,
+    pub profile: UserProfile,
 }
 
 #[derive(serde::Serialize, serde::Deserialize)]
@@ -23,6 +24,16 @@ pub struct UserVisible {
     pub is_superuser: bool,
     pub thumbnail: Option<String>,
     pub date_joined: chrono::DateTime<chrono::Utc>,
+    pub profile: UserProfile,
+}
+
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct UserProfile {
+    pub id: uuid::Uuid,
+    pub user_id: uuid::Uuid,
+    pub phone_number: Option<String>,
+    pub birth_date: Option<chrono::NaiveDate>,
+    pub github_link: Option<String>,
 }
 #[derive(serde::Serialize)]
 pub struct LoggedInUser {

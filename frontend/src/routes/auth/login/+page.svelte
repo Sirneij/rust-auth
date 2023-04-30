@@ -30,16 +30,9 @@
 			errors = err;
 		} else {
 			loading.setLoading(false);
+
 			const response: User = res as User;
-			$loggedInUser = {
-				id: response['id'],
-				email: response['email'],
-				first_name: response['first_name'],
-				last_name: response['last_name'],
-				is_staff: response['is_staff'],
-				is_superuser: response['is_superuser'],
-				thumbnail: response['thumbnail']
-			};
+			$loggedInUser = response;
 			$isAuthenticated = true;
 
 			$notification = {
