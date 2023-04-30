@@ -56,19 +56,19 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		max-width: 32em;
-		max-height: calc(100vh - 4em);
+		max-width: 32rem;
+		max-height: calc(100vh - 4rem);
 		overflow: auto;
 		background: rgb(15, 23, 42);
 		box-shadow: 0 0 10px hsl(0 0% 0% / 10%);
 		transform: translate(-50%, -50%);
 		border-radius: 0.5rem;
 	}
-        @media (max-width: 769px) {
-            .modal {
-               max-width: 90%;
-            }
-        }
+	@media (max-width: 769px) {
+		.modal {
+			width: 90%;
+		}
+	}
 	.modal-close {
 		position: absolute;
 		top: 0.5rem;
