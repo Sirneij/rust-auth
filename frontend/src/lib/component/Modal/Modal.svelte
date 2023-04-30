@@ -64,6 +64,11 @@
 		transform: translate(-50%, -50%);
 		border-radius: 0.5rem;
 	}
+        @media (max-width: 769px) {
+            .modal {
+               max-width: 90%;
+            }
+        }
 	.modal-close {
 		position: absolute;
 		top: 0.5rem;
