@@ -60,13 +60,12 @@
 		} else {
 			loading.setLoading(false);
 			(event.target as HTMLFormElement).reset();
-			close();
 			$notification = {
 				message: `Your profile has been saved successfully ${happyEmoji}...`,
 				colorName: 'green'
 			};
-
 			loggedInUser.set(res as User);
+			close();
 		}
 	}
 </script>
