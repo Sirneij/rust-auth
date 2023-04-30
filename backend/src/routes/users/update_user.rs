@@ -4,6 +4,7 @@ use sqlx::Row;
 pub struct UserForm {
     first_name: Option<actix_multipart::form::text::Text<String>>,
     last_name: Option<actix_multipart::form::text::Text<String>>,
+    #[multipart(limit = "1 MiB")]
     thumbnail: Option<actix_multipart::form::tempfile::TempFile>,
     phone_number: Option<actix_multipart::form::text::Text<String>>,
     birth_date: Option<actix_multipart::form::text::Text<chrono::NaiveDate>>,
