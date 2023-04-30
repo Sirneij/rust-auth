@@ -39,7 +39,7 @@
 					Login
 				</a>
 			{:else}
-				<a href="/auth/about" class="block shrink-0">
+				<a href="/auth/about/{$loggedInUser.id}" class="block shrink-0">
 					<span class="sr-only">{$loggedInUser.first_name} Profile</span>
 					<img
 						alt={$loggedInUser.first_name}

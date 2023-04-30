@@ -40,14 +40,10 @@ export const post = async (
 		if (!(body instanceof FormData)) {
 			headers['Content-Type'] = 'application/json';
 			requestInitOptions['headers'] = headers;
-			if (body !== undefined) {
-				requestInitOptions.body = JSON.stringify(body);
-			}
+			requestInitOptions.body = JSON.stringify(body);
 		} else if (body instanceof FormData) {
 			headers['Content-Type'] = 'multipart/form-data';
-			if (body !== undefined) {
-				requestInitOptions['body'] = body;
-			}
+			requestInitOptions['body'] = body;
 		} else if (body === undefined && method !== 'DELETE') {
 			const errors: Array<CustomError> = [
 				{ error: 'Unless you are performing DELETE operation, you must have a body.', id: 0 }
@@ -80,7 +76,14 @@ export const post = async (
 				last_name: res_json['last_name'],
 				is_staff: res_json['is_staff'],
 				thumbnail: res_json['thumbnail'],
-				is_superuser: res_json['is_superuser']
+				is_superuser: res_json['is_superuser'],
+				profile: {
+					id: res_json['profile']['id'],
+					user_id: res_json['profile']['user_id'],
+					phone_number: res_json['profile']['phone_number'],
+					birth_date: res_json['profile']['birth_date'],
+					github_link: res_json['profile']['github_link']
+				}
 			};
 		}
 
