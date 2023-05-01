@@ -80,22 +80,9 @@ async fn run(
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .wrap(
-                actix_cors::Cors::default()
-                    .allowed_origin(&settings.frontend_url)
-                    .allowed_methods(vec!["GET", "POST", "PATCH", "PUT", "DELETE"])
-                    .allowed_headers(vec![
-                        actix_web::http::header::AUTHORIZATION,
-                        actix_web::http::header::ACCEPT,
-                    ])
-                    .allowed_header(actix_web::http::header::CONTENT_TYPE)
-                    .expose_headers(&[actix_web::http::header::CONTENT_DISPOSITION])
-                    .supports_credentials()
-                    .max_age(3600),
-            )
-            .wrap(
                 actix_session::SessionMiddleware::builder(redis_store.clone(), secret_key.clone())
                     .cookie_http_only(true)
-                    .cookie_same_site(actix_web::cookie::SameSite::None)
+                    .cookie_same_site(actix_web::cookie::SameSite::Lax)
                     .cookie_secure(true)
                     .cookie_name("sessionid".to_string())
                     .build(),

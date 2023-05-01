@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	export let key: string;
-	export let duration: number = 300;
+	export let duration = 300;
 </script>
 
 {#key key}

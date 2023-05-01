@@ -7,7 +7,7 @@ pub struct UserForm {
     #[multipart(limit = "1 MiB")]
     thumbnail: Option<actix_multipart::form::tempfile::TempFile>,
     phone_number: Option<actix_multipart::form::text::Text<String>>,
-    birth_date: Option<actix_multipart::form::text::Text<chrono::NaiveDate>>,
+    birth_date: Option<actix_multipart::form::text::Text<String>>,
     github_link: Option<actix_multipart::form::text::Text<String>>,
 }
 
@@ -37,6 +37,7 @@ pub async fn update_users_details(
     session: actix_session::Session,
     s3_client: actix_web::web::Data<crate::uploads::Client>,
 ) -> actix_web::HttpResponse {
+    println!("Here");
     let session_uuid = match crate::routes::users::logout::session_user_id(&session).await {
         Ok(id) => id,
         Err(e) => {
@@ -122,7 +123,14 @@ pub async fn update_users_details(
     }
     // If birth_date is updated
     if let Some(bd) = form.0.birth_date {
-        user_profile.birth_date = Some(bd.0);
+        match chrono::NaiveDate::parse_from_str(&bd.0, "%Y-%m-%d") {
+            Ok(d) => {
+                user_profile.birth_date = Some(d);
+            }
+            Err(e) => {
+                tracing::event!(target: "backend",tracing::Level::INFO, "Date cannot be parsed: {:#?}", e);
+            }
+        }
     }
     // If github_link is updated
     if let Some(gl) = form.0.github_link {
@@ -214,8 +222,7 @@ async fn update_user_in_db(
                     AND $2 IS DISTINCT 
                 FROM 
                     last_name 
-                    OR $3 IS NOT NULL 
-                    AND $3 IS DISTINCT 
+                    OR $3 IS DISTINCT 
                 FROM 
                     thumbnail
             )",
@@ -241,22 +248,19 @@ async fn update_user_in_db(
         UPDATE 
             user_profile 
         SET 
-            phone_number = COALESCE($1, phone_number), 
+            phone_number = NULLIF($1, ''), 
             birth_date = $2, 
-            github_link = COALESCE($3, github_link)
+            github_link = NULLIF($3, '')
         WHERE 
             user_id = $4 
             AND (
-                $1 IS NOT NULL 
-                AND $1 IS DISTINCT 
+                $1 IS DISTINCT 
                 FROM 
                     phone_number 
-                    OR $2 IS NOT NULL 
-                    AND $2 IS DISTINCT 
+                    OR $2 IS DISTINCT 
                 FROM 
                     birth_date 
-                    OR $3 IS NOT NULL 
-                    AND $3 IS DISTINCT 
+                    OR $3 IS DISTINCT 
                 FROM 
                     github_link
             )",

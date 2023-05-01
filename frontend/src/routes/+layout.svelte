@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { beforeNavigate } from '$app/navigation';
 	import { navigating } from '$app/stores';
 	import Header from '$lib/component/Header/Header.svelte';
 	import Loader from '$lib/component/Loader/Loader.svelte';
 	import Notification from '$lib/component/Notification/Notification.svelte';
 	import PageTransition from '$lib/component/Transition/PageTransition.svelte';
 	import '$lib/css/app.css';
+	import '$lib/css/styles.min.css';
 	import { loading } from '$lib/stores/loading.store';
-	import { notification } from '$lib/stores/notification.store';
 	import type { PageData } from './$types';
 
 	export let data: PageData;

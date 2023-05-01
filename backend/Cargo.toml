@@ -12,7 +12,6 @@ path = "src/main.rs"
 name = "backend"
 
 [dependencies]
-actix-cors = "0.6"
 actix-multipart = "0.6"
 actix-session = { version = "0.7", features = [
     "redis-rs-session",
