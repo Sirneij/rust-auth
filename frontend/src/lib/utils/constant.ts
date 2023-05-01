@@ -44,5 +44,20 @@ export const topics: Array<Topic> = [
 		id: crypto.randomUUID(),
 		title: 'Log in/out, Dockerize and Deploy on fly.io',
 		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-log-inout-dockerize-and-deploy-on-flyio-58pc'
+	},
+	{
+		id: crypto.randomUUID(),
+		title: 'Log in/out, Dockerize and Deploy on fly.io',
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-log-inout-dockerize-and-deploy-on-flyio-58pc'
+	},
+	{
+		id: crypto.randomUUID(),
+		title: 'File upload to AWS S3, Profile Update',
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-file-upload-to-aws-s3-profile-update-3b2a'
+	},
+	{
+		id: crypto.randomUUID(),
+		title: 'User Profile Update UI',
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-user-profile-update-ui-4f78'
 	}
 ];
