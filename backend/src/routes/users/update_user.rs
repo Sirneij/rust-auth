@@ -76,35 +76,38 @@ pub async fn update_users_details(
 
     // If thumbnail was included for update
     if let Some(thumbnail) = &form.0.thumbnail {
-        // Get user's current thumbnail from the DB
-        let user_current_thumbnail = match sqlx::query("SELECT thumbnail FROM users WHERE id=$1")
-            .bind(session_uuid)
-            .map(|row: sqlx::postgres::PgRow| Thumbnail {
-                thumbnail: row.get("thumbnail"),
-            })
-            .fetch_one(&mut *transaction)
-            .await
-        {
-            Ok(image_url) => image_url.thumbnail,
-            Err(e) => {
-                tracing::event!(target: "sqlx",tracing::Level::ERROR, "Failed to get user thumbnail from the DB: {:#?}", e);
-                None
-            }
-        };
-        // If there is a current image, delete it
-        if let Some(url) = user_current_thumbnail {
-            let s3_image_key = &url[url.find("media").unwrap_or(url.len())..];
-
-            if !s3_client.delete_file(s3_image_key).await {
-                tracing::event!(target: "backend",tracing::Level::INFO, "We could not delete the current thumbnail of user with ID: {}", session_uuid);
-            }
-        }
-        // make key prefix (make sure it ends with a forward slash)
-        let s3_key_prefix = format!("media/rust-auth/{session_uuid}/");
         // upload temp files to s3 and then remove them
         match thumbnail.file_name.as_deref() {
             Some(name) => {
+                // Ensures that file name is not empty
                 if !name.is_empty() {
+                    // Get user's current thumbnail from the DB
+                    let user_current_thumbnail = match sqlx::query(
+                        "SELECT thumbnail FROM users WHERE id=$1",
+                    )
+                    .bind(session_uuid)
+                    .map(|row: sqlx::postgres::PgRow| Thumbnail {
+                        thumbnail: row.get("thumbnail"),
+                    })
+                    .fetch_one(&mut *transaction)
+                    .await
+                    {
+                        Ok(image_url) => image_url.thumbnail,
+                        Err(e) => {
+                            tracing::event!(target: "sqlx",tracing::Level::ERROR, "Failed to get user thumbnail from the DB: {:#?}", e);
+                            None
+                        }
+                    };
+                    // If there is a current image, delete it
+                    if let Some(url) = user_current_thumbnail {
+                        let s3_image_key = &url[url.find("media").unwrap_or(url.len())..];
+
+                        if !s3_client.delete_file(s3_image_key).await {
+                            tracing::event!(target: "backend",tracing::Level::INFO, "We could not delete the current thumbnail of user with ID: {}", session_uuid);
+                        }
+                    }
+                    // make key prefix (make sure it ends with a forward slash)
+                    let s3_key_prefix = format!("media/rust-auth/{session_uuid}/");
                     let uploaded_file = s3_client.upload(thumbnail, &s3_key_prefix).await;
                     updated_user.thumbnail = Some(uploaded_file.s3_url);
                 } else {
