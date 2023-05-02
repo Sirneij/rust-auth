@@ -102,8 +102,19 @@ pub async fn update_users_details(
         // make key prefix (make sure it ends with a forward slash)
         let s3_key_prefix = format!("media/rust-auth/{session_uuid}/");
         // upload temp files to s3 and then remove them
-        let uploaded_file = s3_client.upload(thumbnail, &s3_key_prefix).await;
-        updated_user.thumbnail = Some(uploaded_file.s3_url);
+        match thumbnail.file_name.as_deref() {
+            Some(name) => {
+                if name != "" {
+                    let uploaded_file = s3_client.upload(thumbnail, &s3_key_prefix).await;
+                    updated_user.thumbnail = Some(uploaded_file.s3_url);
+                } else {
+                    tracing::event!(target: "backend",tracing::Level::INFO, "Uploaded file was empty");
+                }
+            }
+            None => {
+                tracing::event!(target: "backend",tracing::Level::INFO, "Uploaded file was null...");
+            }
+        }
     }
 
     // If first_name is updated

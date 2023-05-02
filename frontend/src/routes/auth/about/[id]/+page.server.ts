@@ -29,7 +29,7 @@ export const actions: Actions = {
 		// Ensure that the file is not too big
 		if (formData.get('thumbnail')) {
 			const file = formData.get('thumbnail') as File;
-			if (file.size <= 0) {
+			if (file.size <= 0 || file.name === '' || file.length <= 0) {
 				formData.delete('thumbnail');
 			} else {
 				const [size, isValid] = returnFileSize(file.size);
