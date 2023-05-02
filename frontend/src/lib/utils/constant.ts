@@ -59,5 +59,10 @@ export const topics: Array<Topic> = [
 		id: crypto.randomUUID(),
 		title: 'User Profile Update UI',
 		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-user-profile-update-ui-4f78'
+	},
+	{
+		id: crypto.randomUUID(),
+		title: 'Enhancing the frontend application with form actions',
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-enhancing-the-frontend-application-with-form-actions-3d10'
 	}
 ];
