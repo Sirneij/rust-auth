@@ -35,7 +35,7 @@
 				Authentication system using Actix Web and Sveltekit
 			</h1>
 
-			<h2 class="text-lg text-slate-400 mt-3">Articles in this series</h2>
+			<h2 class="text-lg text-slate-400 mt-3">Articles in this series ({topics.length} part)</h2>
 
 			<div class="mt-8 space-y-5">
 				{#each sometopics as topic (topic.id)}
