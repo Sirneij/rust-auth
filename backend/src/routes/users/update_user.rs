@@ -104,7 +104,7 @@ pub async fn update_users_details(
         // upload temp files to s3 and then remove them
         match thumbnail.file_name.as_deref() {
             Some(name) => {
-                if name != "" {
+                if !name.is_empty() {
                     let uploaded_file = s3_client.upload(thumbnail, &s3_key_prefix).await;
                     updated_user.thumbnail = Some(uploaded_file.s3_url);
                 } else {
