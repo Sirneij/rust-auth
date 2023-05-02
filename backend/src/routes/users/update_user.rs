@@ -37,7 +37,6 @@ pub async fn update_users_details(
     session: actix_session::Session,
     s3_client: actix_web::web::Data<crate::uploads::Client>,
 ) -> actix_web::HttpResponse {
-    println!("Here");
     let session_uuid = match crate::routes::users::logout::session_user_id(&session).await {
         Ok(id) => id,
         Err(e) => {

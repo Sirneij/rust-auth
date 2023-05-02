@@ -23,8 +23,6 @@
 			await applyAction(result);
 		};
 	};
-
-	console.log($page.url);
 </script>
 
 <svelte:head>
