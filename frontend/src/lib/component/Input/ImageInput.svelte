@@ -1,40 +1,20 @@
 <script lang="ts">
-	import { HIGHEST_IMAGE_UPLOAD_SIZE, IMAGE_UPLOAD_SIZE } from '$lib/utils/constant';
-	import { returnFileSize } from '$lib/utils/helpers/image.file.size';
-	import type { CustomError } from '$lib/utils/types';
-	export let title: string;
-	export let image: string | Blob;
 	export let avatar: string | null;
-	export let errors: Array<CustomError>;
 	let thumbnail: HTMLInputElement;
 	const onFileSelected = (e: Event) => {
 		const target = e.target as HTMLInputElement;
 		if (target && target.files) {
-			if (target.files[0].size < HIGHEST_IMAGE_UPLOAD_SIZE) {
-				errors = [];
-				image = target.files[0];
-				let reader = new FileReader();
-				reader.readAsDataURL(image);
-				reader.onload = (e) => {
-					avatar = e.target?.result as string;
-				};
-			} else {
-				errors = [
-					...errors,
-					{
-						id: Math.floor(Math.random() * 100),
-						error: `Image size ${returnFileSize(
-							target.files[0].size
-						)} is too large. Please keep it below ${IMAGE_UPLOAD_SIZE}kB.`
-					}
-				];
-			}
+			let reader = new FileReader();
+			reader.readAsDataURL(target.files[0]);
+			reader.onload = (e) => {
+				avatar = e.target?.result as string;
+			};
 		}
 	};
 </script>
 
 <div id="app">
-	<h1>{title}</h1>
+	<h3>Upload user image</h3>
 
 	{#if avatar}
 		<img class="avatar" src={avatar} alt="d" />
@@ -46,13 +26,18 @@
 		/>
 	{/if}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<i
-		class="upload fa-solid fa-3x fa-camera"
-		title="Upload image. Max size is 49kB."
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
 		on:click={() => {
 			thumbnail.click();
 		}}
-	/>
+		class="upload"
+		viewBox="0 0 512 512"
+	>
+		<path
+			d="M220.6 121.2L271.1 96 448 96v96H333.2c-21.9-15.1-48.5-24-77.2-24s-55.2 8.9-77.2 24H64V128H192c9.9 0 19.7-2.3 28.6-6.8zM0 128V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H271.1c-9.9 0-19.7 2.3-28.6 6.8L192 64H160V48c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16l0 16C28.7 64 0 92.7 0 128zM168 304a88 88 0 1 1 176 0 88 88 0 1 1 -176 0z"
+		/>
+	</svg>
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
@@ -84,13 +69,14 @@
 	}
 	.upload {
 		display: flex;
-		height: 50px;
-		width: 50px;
+		height: 2.7rem;
+		width: 2.7rem;
 		cursor: pointer;
+		fill: rgb(14 165 233);
 	}
 	.avatar {
 		display: flex;
-		height: 200px;
-		width: 200px;
+		height: 8rem;
+		width: 8rem;
 	}
 </style>

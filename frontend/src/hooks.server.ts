@@ -3,11 +3,19 @@ import type { User } from '$lib/utils/types';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	// get cookies from browser
+	const session = event.cookies.get('id');
+
+	if (!session) {
+		// if there is no session load page as normal
+		return await resolve(event);
+	}
+
 	// find the user based on the session
 	const res = await event.fetch(`${BASE_API_URI}/users/current-user/`, {
 		credentials: 'include',
 		headers: {
-			Cookie: `sessionid=${event.cookies.get('id')}`
+			Cookie: `sessionid=${session}`
 		}
 	});
 

@@ -53,7 +53,7 @@ export const POST: RequestHandler = async (event) => {
 
 	event.locals.user = response;
 
-	return new Response(JSON.stringify(response), {
+	return new Response(JSON.stringify({ success: false }), {
 		status: 200,
 		headers: {
 			'Content-Type': 'application/json'
