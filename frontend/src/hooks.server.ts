@@ -3,6 +3,10 @@ import type { User } from '$lib/utils/types';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	if (event.locals.user) {
+		// if there is already a user  in session load page as normal
+		return await resolve(event);
+	}
 	// get cookies from browser
 	const session = event.cookies.get('id');
 

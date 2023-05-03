@@ -23,6 +23,19 @@
 			await applyAction(result);
 		};
 	};
+
+	let message = '';
+
+	if ($page.url.search) {
+		message = $page.url.search.split('=')[1].replaceAll('%20', ' ');
+	}
+
+	if (message) {
+		$notification = {
+			message: `${message} ${happyEmoji}...`,
+			colorName: 'emerald'
+		};
+	}
 </script>
 
 <svelte:head>
@@ -50,14 +63,14 @@
 
 	<input type="password" name="password" id="password" placeholder="Password" required />
 
-	<span style="display:block; text-align: right; margin-bottom: 0.5rem">
-		<a href={null} class="text-sm text-slate-400"> Forgot password? </a>
-	</span>
+	<p style="text-align: right; margin-bottom: 0.5rem">
+		<a href="/auth/password/request-change" class="text-sm text-slate-400"> Forgot password? </a>
+	</p>
 
 	<button type="submit" class="btn"> Login </button>
 
-	<span class="text-sm text-sky-400" style="display:block; text-align: center; margin-top: 0.5rem">
+	<p class="text-sm text-sky-400" style="text-align: center; margin-top: 0.5rem">
 		No account?
-		<a href="/auth/register" class="ml-2 text-slate-400"> Create an account. </a>
-	</span>
+		<a href="/auth/register" class="ml-2 text-slate-400">Create an account.</a>
+	</p>
 </form>
