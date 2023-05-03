@@ -1,7 +1,9 @@
 mod confirm_registration;
 mod current_user;
+mod generate_new_token;
 mod login;
 mod logout;
+mod password_change;
 mod register;
 mod update_user;
 
@@ -13,6 +15,9 @@ pub fn auth_routes_config(cfg: &mut actix_web::web::ServiceConfig) {
             .service(login::login_user)
             .service(current_user::get_current_user)
             .service(update_user::update_users_details)
-            .service(logout::log_out),
+            .service(generate_new_token::regenerate_token)
+            .service(logout::log_out)
+            // Password operations
+            .configure(password_change::password_routes_config),
     );
 }

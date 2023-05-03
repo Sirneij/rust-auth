@@ -4,7 +4,7 @@
 	import { onDestroy } from 'svelte';
 
 	let visible: boolean,
-		ms = 3000,
+		ms = 5000,
 		timeout: any,
 		textColor = 'text-emerald-600',
 		bgColor = 'border-emerald-300 bg-emerald-100',

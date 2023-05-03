@@ -58,6 +58,6 @@
 
 	<span class="text-sm text-sky-400" style="display:block; text-align: center; margin-top: 0.5rem">
 		No account?
-		<a href="/auth/register" class="ml-2 text-slate-400"> Create an account. </a>
+		<a href="/auth/register" class="ml-2 text-slate-400">Create an account.</a>
 	</span>
 </form>

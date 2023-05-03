@@ -137,7 +137,7 @@ pub async fn send_multipart_email(
     let confirmation_link = {
         if template_name == "password_reset_email.html" {
             format!(
-                "{}/users/password/confirm/change_password?token={}",
+                "{}/users/password-change/confirm/change-password/?token={}",
                 web_address, issued_token,
             )
         } else {
