@@ -74,7 +74,7 @@ pub async fn confirm_change_password_token(
         .insert_header((
             actix_web::http::header::LOCATION,
             format!(
-                "{}/auth/change/password?token={}",
+                "{}/auth/password/change-password?token={}",
                 settings.frontend_url, issued_token
             ),
         ))
