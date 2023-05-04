@@ -59,5 +59,10 @@ export const topics: Array<Topic> = [
 		id: crypto.randomUUID(),
 		title: 'Enhancing the frontend application with form actions',
 		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-enhancing-the-frontend-application-with-form-actions-3d10'
+	},
+	{
+		id: crypto.randomUUID(),
+		title: 'Token regeneration and password reset',
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-token-regeneration-and-password-reset-2eai'
 	}
 ];
