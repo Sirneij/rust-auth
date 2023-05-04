@@ -53,4 +53,5 @@ uuid = { version = "1", features = ["v4", "serde"] }
 
 [dev-dependencies]
 fake = "2.6"
+mockall = "0.11"
 reqwest = { version = "0.11", features = ["json", "cookies", "multipart"] }
