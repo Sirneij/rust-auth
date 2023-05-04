@@ -108,7 +108,7 @@ jobs:
         working-directory: ./backend
         run: grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
       - name: Set current date as env variable
-        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+        run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
       - name: Commit ./coverage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
