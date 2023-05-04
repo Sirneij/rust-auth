@@ -70,7 +70,7 @@ pub async fn register_user(
                     error: "Error inserting user into the database".to_string(),
                 }
             };
-            return actix_web::HttpResponse::InternalServerError().json(error_message);
+            return actix_web::HttpResponse::BadRequest().json(error_message);
         }
     };
 
