@@ -106,12 +106,10 @@ jobs:
         run: cargo test
       - name: Generate code coverage HTML and commit files
         working-directory: ./backend
-        run: |
-        grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
-        if ! git diff --exit-code; then
-            git config --local user.email "actions@github.com"
-            git config --local user.name "GitHub Action test"
-            git add ./coverage
-            git commit -m "Add github action changes"
-            git push -f origin main
-        fi
+        run: grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
+        run: git config --local user.email "actions@github.com"
+        run: git config --local user.name "GitHub Action test"
+        run: git add ./coverage
+        run: git commit -m "Add github action changes"
+        run: git push -f origin main
+        
