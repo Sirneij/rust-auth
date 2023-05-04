@@ -7,7 +7,7 @@ on:
     branches:
       - main
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [opened, synchronize, reopened]
     branches:
       - main
 
@@ -17,39 +17,6 @@ env:
   SQLX_FEATURES: "rustls,postgres"
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: sqlx-${{ env.SQLX_VERSION }}
-      - name: Install sqlx-cli
-        working-directory: ./backend
-        run: cargo install sqlx-cli
-          --version=${{ env.SQLX_VERSION }}
-          --features ${{ env.SQLX_FEATURES }}
-          --no-default-features
-          --locked
-      - name: Run tests
-        working-directory: ./backend
-        run: cargo test
-
   fmt:
     name: Rustfmt
     runs-on: ubuntu-latest
@@ -88,13 +55,12 @@ jobs:
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
-          --locked
       - name: Linting
         working-directory: ./backend
         run: cargo clippy -- -D warnings
 
-  coverage:
-    name: Code coverage
+  coverage_and_test:
+    name: Test and Code coverage
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -112,22 +78,40 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@nightly
       - name: Install libpq
         run: sudo apt-get update && sudo apt-get install postgresql-client -y
       - uses: Swatinem/rust-cache@v2
         with:
           key: sqlx-${{ env.SQLX_VERSION }}
-      - name: Install tarpaulin
-        working-directory: ./backend
-        run: cargo install cargo-tarpaulin
+      - name: add lvm-tools-preview
+        run: rustup component add llvm-tools-preview
+      - name: Install grcov
+        run: cargo install grcov
       - name: Install sqlx-cli
-        working-directory: ./backend
         run: cargo install sqlx-cli
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
-          --locked
-      - name: Generate code coverage
+      - name: Build the code
         working-directory: ./backend
-        run: cargo tarpaulin --verbose --workspace
+        env:
+          CARGO_INCREMENTAL: "0"
+          RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
+          RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
+          LLVM_PROFILE_FILE:
+        run: cargo build
+      - name: Run the test
+        working-directory: ./backend
+        run: cargo test
+      - name: Generate code coverage HTML and commit files
+        working-directory: ./backend
+        run: |
+        grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
+        if ! git diff --exit-code; then
+            git config --local user.email "actions@github.com"
+            git config --local user.name "GitHub Action test"
+            git add ./coverage
+            git commit -m "Add github action changes"
+            git push -f origin main
+        fi

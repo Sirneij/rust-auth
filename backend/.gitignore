@@ -1,2 +1,5 @@
 /target
-.env.*
+.env.development
+default_*
+your_name-*
+backend-*
