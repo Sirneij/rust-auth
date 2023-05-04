@@ -108,10 +108,7 @@ jobs:
         working-directory: ./backend
         run: grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
       - name: Commit ./coverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./backend
-        run: git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git add ./coverage && git commit -m "Add github action changes"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+        run: git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git add ./coverage && git commit -m "Add github action changes" && git push --dry-run --no-verify https://x-access-token:$GITHUB_TOKEN@github.com/Sirneij/rust-auth HEAD:main
