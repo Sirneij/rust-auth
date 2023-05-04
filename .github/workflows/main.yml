@@ -55,7 +55,6 @@ jobs:
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
-          --locked
       - name: Linting
         working-directory: ./backend
         run: cargo clippy -- -D warnings
@@ -94,7 +93,6 @@ jobs:
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
-          --locked
       - name: Build the code
         working-directory: ./backend
         env:
@@ -106,6 +104,14 @@ jobs:
       - name: Run the test
         working-directory: ./backend
         run: cargo test
-      - name: Generate code coverage HTML
+      - name: Generate code coverage HTML and commit files
         working-directory: ./backend
-        run: grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
+        run: |
+        grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
+        if ! git diff --exit-code; then
+            git config --local user.email "actions@github.com"
+            git config --local user.name "GitHub Action test"
+            git add ./coverage
+            git commit -m "Add github action changes"
+            git push -f origin main
+        fi
