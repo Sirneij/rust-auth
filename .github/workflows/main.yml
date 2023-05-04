@@ -104,11 +104,9 @@ jobs:
       - name: Run the test
         working-directory: ./backend
         run: cargo test
-      - name: Generate code coverage HTML and commit files
+      - name: Generate code coverage HTML
         working-directory: ./backend
         run: grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
-        # run: git config --local user.email "actions@github.com"
-        # run: git config --local user.name "GitHub Action test"
-        # run: git add ./coverage
-        # run: git commit -m "Add github action changes"
-        # run: git push -f origin main
+      - name: Commit ./coverage
+        working-directory: ./backend
+        run: git config --local user.email "actions@github.com" && git config --local user.name "GitHub Action test" && git add ./coverage && git commit -m "Add github action changes" && git push origin main
