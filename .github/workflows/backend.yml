@@ -101,16 +101,10 @@ jobs:
           RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
           LLVM_PROFILE_FILE:
         run: cargo build
-      - name: Run the test
-        working-directory: ./backend
-        run: cargo test
-      - name: Generate code coverage HTML
-        working-directory: ./backend
-        run: grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
-      - name: Commit ./coverage
+      - name: Run the test
+        working-directory: ./backend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./backend
-        run: git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git checkout -b branch-$NOW && git add ./coverage && git commit -m "Add github action changes" && git push origin branch-$NOW
+        run: cargo test && grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/ && git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git checkout -b branch-$NOW && git add ./coverage && git commit -m "Add github action changes" && git push origin branch-$NOW
