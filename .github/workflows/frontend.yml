@@ -1,0 +1,38 @@
+name: SvelteKit CI
+
+on:
+  # These settings allow us to run this specific CI pipeline for PRs against
+  # this specific branch (main).
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+jobs:
+  basic-tests-and-linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.x"
+      - name: Install dependencies
+        run: npm i
+      - name: install playwright
+        run: npx playwright install
+      - name: Test (end-to-end)
+        run: npm run test
+      - name: Test (Unit)
+        run: npx vitest run
+      - name: Lint
+        run: npm run format && npm run lint
+      - name: Type-check
+        run: npm run check

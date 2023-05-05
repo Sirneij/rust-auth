@@ -1,4 +1,4 @@
-name: "Rust-Auth Backend"
+name: "Rust-Auth Backend CI"
 
 on:
   # These settings allow us to run this specific CI pipeline for PRs against
@@ -10,6 +10,10 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - main
+
+defaults:
+  run:
+    working-directory: ./backend
 
 env:
   CARGO_TERM_COLOR: always
@@ -26,7 +30,6 @@ jobs:
         with:
           components: rustfmt
       - name: Enforce formatting
-        working-directory: ./backend
         run: cargo fmt --check
 
   clippy:
@@ -50,13 +53,11 @@ jobs:
         with:
           key: sqlx-${{ env.SQLX_VERSION }}
       - name: Install sqlx-cli
-        working-directory: ./backend
         run: cargo install sqlx-cli
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
       - name: Linting
-        working-directory: ./backend
         run: cargo clippy -- -D warnings
 
   coverage_and_test:
@@ -94,7 +95,6 @@ jobs:
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
       - name: Build the code
-        working-directory: ./backend
         env:
           CARGO_INCREMENTAL: "0"
           RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
@@ -104,7 +104,8 @@ jobs:
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
       - name: Run the test
-        working-directory: ./backend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cargo test && grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/ && git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git checkout -b branch-$NOW && git add ./coverage && git commit -m "Add github action changes" && git push origin branch-$NOW
+        run: cargo test && grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
+      - name: Create a branch with `./coverage
+        run: git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git checkout -b branch-$NOW && git add ./coverage && git commit -m "Add github action changes" && git push origin branch-$NOW
