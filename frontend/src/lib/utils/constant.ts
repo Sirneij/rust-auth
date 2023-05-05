@@ -64,5 +64,10 @@ export const topics: Array<Topic> = [
 		id: Math.floor(Math.random() * 1000000000000),
 		title: 'Token regeneration and password reset',
 		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-token-regeneration-and-password-reset-2eai'
+	},
+	{
+		id: Math.floor(Math.random() * 1000000000000),
+		title: 'Automated testing',
+		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-automated-testing-1nhi'
 	}
 ];
