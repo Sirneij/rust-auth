@@ -33,7 +33,7 @@ pasetors = "0.6"
 serde = "1"
 serde_json = { version = "1", features = ["raw_value"] }
 sqlx = { version = "0.6", features = [
-    "runtime-actix-rustls",
+    "runtime-tokio-rustls",
     "postgres",
     "uuid",
     "chrono",

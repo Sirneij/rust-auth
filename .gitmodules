@@ -1,3 +1,6 @@
 [submodule "auth-backend-axum"]
 	path = auth-backend-axum
 	url = https://github.com/Sirneij/auth-backend-axum.git
+[submodule "django-auth-backend"]
+	path = django-auth-backend
+	url = https://github.com/Sirneij/django-auth-backend.git
