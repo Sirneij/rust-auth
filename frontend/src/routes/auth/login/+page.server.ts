@@ -49,17 +49,14 @@ export const actions: Actions = {
 			return fail(400, { errors: errors });
 		}
 
-		for (const header of res.headers) {
-			if (header[0] === 'set-cookie') {
-				cookies.set('id', header[1].split('=')[1].split(';')[0], {
-					httpOnly: true,
-					sameSite: 'lax',
-					path: '/',
-					secure: true
-				});
-
-				break;
-			}
+		if (res.headers.has('Set-Cookie')) {
+			const sessionID = Object.fromEntries(res.headers)['set-cookie'].split(';')[0].split('=')[1];
+			cookies.set('id', sessionID, {
+				httpOnly: true,
+				sameSite: 'lax',
+				path: '/',
+				secure: true
+			});
 		}
 
 		throw redirect(303, next || '/');
