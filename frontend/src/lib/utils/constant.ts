@@ -14,7 +14,7 @@ export const happyEmoji = '😊';
 export const thinkingEmoji = '🤔';
 export const eyesRoll = '🙄';
 
-export const topics: Array<Topic> = [
+export const actixTopics: Array<Topic> = [
 	{
 		id: Math.floor(Math.random() * 10),
 		title: 'Backend Introduction',
@@ -69,5 +69,13 @@ export const topics: Array<Topic> = [
 		id: Math.floor(Math.random() * 1000000000000),
 		title: 'Automated testing',
 		url: 'https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-automated-testing-1nhi'
+	}
+];
+
+export const djangoTopics: Array<Topic> = [
+	{
+		id: Math.floor(Math.random() * 10),
+		title: 'Submission',
+		url: 'https://dev.to/sirneij/authentication-system-using-python-django-and-sveltekit-23e1'
 	}
 ];

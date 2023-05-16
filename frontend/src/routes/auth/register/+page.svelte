@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-	<title>Auth - Register | Actix Web & SvelteKit</title>
+	<title>Auth - Register | Auth Systems with SvelteKit</title>
 </svelte:head>
 
 <form class="form" action="?/register" method="POST" use:enhance={handleRegister}>
