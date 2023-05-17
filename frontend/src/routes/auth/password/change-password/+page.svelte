@@ -27,7 +27,7 @@
 </script>
 
 <svelte:head>
-	<title>Auth - Change Password | Actix Web & SvelteKit</title>
+	<title>Auth - Change Password | Auth Systems with SvelteKit</title>
 </svelte:head>
 
 <div class="flex items-center justify-center h-[60vh]">

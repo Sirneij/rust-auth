@@ -39,7 +39,7 @@
 </script>
 
 <svelte:head>
-	<title>Auth - Login | Actix Web & SvelteKit</title>
+	<title>Auth - Login | Auth Systems with SvelteKit</title>
 </svelte:head>
 
 <form class="form" method="POST" action="?/login" use:enhance={handleLogin}>

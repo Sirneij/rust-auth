@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Auth - Account activated | Actix Web & SvelteKit</title>
+	<title>Auth - Account activated | Auth Systems with SvelteKit</title>
 </svelte:head>
 <div class="flex items-center justify-center h-[60vh]">
 	<div

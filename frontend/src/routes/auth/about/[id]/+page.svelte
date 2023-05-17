@@ -38,7 +38,8 @@
 <svelte:head>
 	{#if $page.data.user}
 		<title>
-			Auth - About {`${$page.data.user.first_name} ${$page.data.user.last_name}`} | Actix Web & SvelteKit
+			Auth - About {`${$page.data.user.first_name} ${$page.data.user.last_name}`} | Auth Systems with
+			SvelteKit
 		</title>
 	{/if}
 </svelte:head>
