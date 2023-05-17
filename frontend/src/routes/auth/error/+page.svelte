@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>Auth - Error | Actix Web & SvelteKit</title>
+	<title>Auth - Error | Auth Systems with SvelteKit</title>
 </svelte:head>
 
 <div class="flex items-center justify-center h-[60vh]">

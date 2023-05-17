@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('login page has title, h1 and url', async ({ page }) => {
 	await page.goto('/auth/login');
-	await expect(page).toHaveTitle('Auth - Login | Actix Web & SvelteKit');
+	await expect(page).toHaveTitle('Auth - Login | Auth Systems with SvelteKit');
 	await expect(page).toHaveURL('/auth/login');
 	expect(await page.textContent('h1')).toBe('Login');
 });

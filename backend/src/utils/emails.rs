@@ -31,7 +31,7 @@ pub async fn send_email(
         .from(
             format!(
                 "{} <{}>",
-                "Actix Web & SvelteKit",
+                "Auth Systems with SvelteKit",
                 if sender_email.is_some() {
                     sender_email.unwrap()
                 } else {
