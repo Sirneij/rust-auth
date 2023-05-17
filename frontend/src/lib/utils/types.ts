@@ -56,3 +56,10 @@ export interface Loading {
 	status: Status;
 	message: string;
 }
+
+export interface SeriesAndArticles {
+	id: string;
+	name: string;
+	image: string;
+	articles: Array<Topic>;
+}

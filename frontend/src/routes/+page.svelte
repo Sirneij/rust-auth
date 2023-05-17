@@ -1,26 +1,42 @@
 <script lang="ts">
-	import ActixWebSvelte from '$lib/svgs/rust.jpg';
-	import DjangoSvelte from '$lib/svgs/django.jpg';
-	import { actixTopics } from '$lib/utils/constant';
-	import { receive, send } from '$lib/utils/helpers/animate.crossfade';
-	import type { Topic } from '$lib/utils/types';
-	import { flip } from 'svelte/animate';
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import Slide from '$lib/component/Hero/Slide.svelte';
 
-	let someactixTopics = [actixTopics[0]],
-		next = 1;
+	export let data: PageData;
 
-	const addTopic = () => {
-		if (next < actixTopics.length) {
-			someactixTopics.push(actixTopics[next]);
-			someactixTopics = someactixTopics;
-			next += 1;
-		}
-	};
+	$: ({ series } = data);
 
-	function removeTopic(topic: Topic) {
-		someactixTopics = someactixTopics.filter((t) => t !== topic);
-		next -= 1;
-	}
+	let slideIndex = 1,
+		plusSlides: any,
+		showSlides: any;
+
+	onMount(() => {
+		showSlides = (n: number) => {
+			let i;
+			let slides = document.getElementsByClassName('hero');
+			if (slides) {
+				if (n > slides.length) {
+					slideIndex = 1;
+				}
+				if (n < 1) {
+					slideIndex = slides.length;
+				}
+				for (i = 0; i < slides.length; i++) {
+					(slides[i] as HTMLElement).style.display = 'none';
+				}
+
+				(slides[slideIndex - 1] as HTMLElement).style.display = 'block';
+			}
+		};
+
+		showSlides(slideIndex);
+
+		// Next/previous controls
+		plusSlides = (n: number) => {
+			showSlides((slideIndex += n));
+		};
+	});
 </script>
 
 <svelte:head>
@@ -28,21 +44,13 @@
 </svelte:head>
 
 <div class="hero-container">
-	<div class="hero fade">
-		<img src={ActixWebSvelte} alt="" />
-		<div class="hero-text">
-			<h1 style="font-size:50px">I am John Doe</h1>
-			<p>And I'm a Photographer</p>
-			<button>Hire me</button>
-		</div>
-	</div>
-
-	<div class="hero fade">
-		<img src={DjangoSvelte} alt="" />
-		<div class="hero-text">
-			<h1 style="font-size:50px">I am John Doe</h1>
-			<p>And I'm a Photographer</p>
-			<button>Hire me</button>
-		</div>
-	</div>
+	{#if series && Array.isArray(series)}
+		{#each series as s (s.id)}
+			<Slide bind:series={s} />
+		{/each}
+	{/if}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<span class="prev" on:click={() => plusSlides(-1)}>&#10094;</span>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<span class="next" on:click={() => plusSlides(-1)}>&#10095;</span>
 </div>
