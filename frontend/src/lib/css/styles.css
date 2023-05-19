@@ -131,6 +131,7 @@ input {
 }
 .hero {
 	min-height: calc(100vh - 6rem);
+	max-height: min-content;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;

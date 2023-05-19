@@ -87,25 +87,23 @@ jobs:
           key: sqlx-${{ env.SQLX_VERSION }}
       - name: add lvm-tools-preview
         run: rustup component add llvm-tools-preview
-      - name: Install grcov
-        run: cargo install grcov
+      # - name: Install grcov
+      #   run: cargo install grcov
       - name: Install sqlx-cli
         run: cargo install sqlx-cli
           --version=${{ env.SQLX_VERSION }}
           --features ${{ env.SQLX_FEATURES }}
           --no-default-features
-      - name: Build the code
-        env:
-          CARGO_INCREMENTAL: "0"
-          RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
-          RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
-          LLVM_PROFILE_FILE:
+      # - name: Build the code
+      #   env:
+      #     CARGO_INCREMENTAL: "0"
+      #     RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
+      #     RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
+      #     LLVM_PROFILE_FILE:
         run: cargo build
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
       - name: Run the test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cargo test && grcov . -s . --binary-path ./target/debug/ -t html --branch --ignore-not-existing -o ./coverage/
-      - name: Create a branch with `./coverage
-        run: git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git checkout -b branch-$NOW && git add ./coverage && git commit -m "Add github action changes" && git push origin branch-$NOW
+        run: cargo test
+      # - name: Create a branch with `./coverage
+      #   run: git config --local user.email "sirneij@gmail.com" && git config --local user.name "GitHub Action test" && git checkout -b branch-$NOW && git add ./coverage && git commit -m "Add github action changes" && git push origin branch-$NOW
