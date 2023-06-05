@@ -2,7 +2,7 @@
 
 A full-stack secure and performant authentication system using rust's [Actix web][1] and JavaScript's [SvelteKit][2].
 
-This application resulted from [this series of articles][3] and it's currently live [here][4].
+This application resulted from [this series of articles][3] and it's currently live [here][4](I have disabled the backend from running live).
 
 ## Run locally
 
